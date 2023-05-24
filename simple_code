@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 /**
  * main - Entry point of the program
@@ -7,6 +8,11 @@
  */
 int main(void)
 {
-	printf("Simple Shell Project!\n");
-	return (0);
+    const char *str = "Simple Shell Project!\n";
+    size_t size = sizeof(char);
+    size_t count = strlen(str);
+    
+    fwrite(str, size, count, stdout);
+    
+    return 0;
 }
