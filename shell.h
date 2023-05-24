@@ -12,6 +12,10 @@
 #include <limits.h>
 #include <sys/stat.h>
 
+#define MAX_COMMAND 10
+void prompt(char **av, char **env);
+void exit(int status);
+
 /* for buffers */
 #define WR_BUFFER_SIZE 1024
 #define RD_BUFFER_SIZE 1024
