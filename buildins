@@ -1,0 +1,82 @@
+#include "shell.h"
+
+/**
+ * prompt - Displays the shell prompt and executes commands
+ * @av: Array of command line arguments
+ * @env: Array of environment variables
+ */
+void prompt(char **av, char **env)
+{
+	char *input = NULL;
+	size_t input_size = 0;
+	ssize_t num_chars;
+
+	while (1)
+	{
+		if (isatty(STDIN_FILENO))
+			printf("cisnotfun$ ");
+
+		num_chars = getline(&input, &input_size, stdin);
+
+		if (num_chars == -1)
+		{
+			free(input);
+			exit(EXIT_FAILURE);
+		}
+
+		if (input[num_chars - 1] == '\n')
+			input[num_chars - 1] = '\0';
+
+		if (strcmp(input, "exit") == 0)
+		{
+			free(input);
+			exit(EXIT_SUCCESS);
+		}
+
+		char *token;
+		char *path = getenv("PATH");
+		char *path_copy = strdup(path);
+
+		token = strtok(path_copy, ":");
+
+		while (token)
+		{
+			char *command = malloc(strlen(token) + strlen(input) + 2);
+			sprintf(command, "%s/%s", token, input);
+
+			if (access(command, X_OK) == 0)
+			{
+				pid_t baby_pid = fork();
+
+				if (baby_pid == -1)
+				{
+					perror("fork");
+					exit(EXIT_FAILURE);
+				}
+
+				if (baby_pid == 0)
+				{
+					execve(command, av, env);
+					perror("execve");
+					exit(EXIT_FAILURE);
+				}
+				else
+				{
+					int status;
+					wait(&status);
+					break;
+				}
+			}
+
+			free(command);
+			token = strtok(NULL, ":");
+		}
+
+		free(path_copy);
+
+		if (!token)
+			printf("%s: command not found\n", input);
+	}
+
+	free(input);
+}

@@ -1,57 +1,86 @@
 #include "shell.h"
 
-void prompt(char **av, char **env)
+#define MAX_COMMAND_LENGTH 100
+
+void display_prompt(void)
 {
-	char *string = NULL;
-	int i, j, status;
-	size_t n = 0;
-	ssize_t num_char;
-	char *argv[MAX_COMMAND];
-	pid_t baby_pid;
+	if (isatty(STDIN_FILENO))
+		printf("cisnotfun$ ");
+}
+
+void execute_command(char *command)
+{
+	pid_t son_pid = fork();
+
+	if (son_pid == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	else if (son_pid == 0)
+	{
+		/* Son process */
+		char *args[2];
+		args[0] = command;
+		args[1] = NULL;
+		execvp(command, args);
+		perror("execvp");
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		/* Parent process */
+		int status;
+		waitpid(son_pid, &status, 0);
+	}
+}
+
+void print_environment(void)
+{
+	char **env = environ;
+
+	while (*env)
+	{
+		printf("%s\n", *env);
+		env++;
+	}
+}
+
+int main(void)
+{
+	char command[MAX_COMMAND_LENGTH];
 
 	while (1)
 	{
-		if (isatty(STDIN_FILENO))
-			printf("cisnotfun$ ");
+		display_prompt();
 
-		num_char = getline(&string, &n, stdin);
-
-		if (num_char == -1)
+		if (fgets(command, sizeof(command), stdin) == NULL)
 		{
-			free(string);
-			exit(EXIT_FAILURE);
+			printf("\n");
+			break; /* EOF encountered */
 		}
 
-		i = 0;
-		while (string[i])
+		/* Remove newline character from the command */
+		command[strcspn(command, "\n")] = '\0';
+
+		if (strlen(command) == 0)
 		{
-			if (string[i] == '\n')
-				string[i] = '\0';
-			i++;
+			continue; /* Empty command, prompt again */
 		}
 
-		j = 0;
-		argv[j] = strtok(string, " ");
-		while (argv[j])
+		if (strcmp(command, "exit") == 0)
 		{
-			argv[++j] = strtok(NULL, " ");
+			break; /* Exit the shell */
 		}
-		baby_pid = fork();
-
-		if (baby_pid == -1)
+		else if (strcmp(command, "env") == 0)
 		{
-			free(string);
-			exit(EXIT_FAILURE);
-		}
-		else if (baby_pid == 0)
-		{
-			if (execve(argv[0], argv, env) == -1)
-				printf("%s: No file or directory found\n", av[0]);
-			exit(EXIT_FAILURE);
+			print_environment(); /* Print the current environment */
 		}
 		else
 		{
-			wait(&status);
+			execute_command(command);
 		}
 	}
+
+	return (0);
 }
