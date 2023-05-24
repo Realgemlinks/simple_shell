@@ -8,13 +8,13 @@
  */
 int main(void)
 {
-    const char *str = "Cisnotfun!\n";
-    size_t size = sizeof(char);
-    size_t count = strlen(str);
+const char *str = "Cisnotfun!\n";
+size_t size = sizeof(char);
+size_t count = strlen(str);
 
-    fwrite(str, size, count, stdout);
+fwrite(str, size, count, stdout);
 
-    printf("Simple Shell Project!\n");
+printf("Simple Shell Project!\n");
 
-    return 0;
+return (0);
 }
