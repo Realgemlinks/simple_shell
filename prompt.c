@@ -1,14 +1,7 @@
 #include "shell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <string.h>
 
-#define MAX_COMMAND 10
 
-void prompt(char **av, char **env)
+void prompt(char **av, char **env)  
 {
     char *string = NULL;
     int i, j, status;
@@ -20,7 +13,7 @@ void prompt(char **av, char **env)
     while (1)
     {
         if (isatty(STDIN_FILENO))
-            printf("cisnotfound$ ");
+            printf("cisnotfun$ ");
 
         num_char = getline(&string, &n, stdin);
 
