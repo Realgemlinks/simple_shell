@@ -20,7 +20,7 @@ void prompt(char **av, char **env)
     while (1)
     {
         if (isatty(STDIN_FILENO))
-            printf("simple shell project ");
+            printf("cisnotfound$ ");
 
         num_char = getline(&string, &n, stdin);
 
