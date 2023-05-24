@@ -8,7 +8,7 @@
  */
 int main(void)
 {
-    const char *str = "Simple Shell Project!\n";
+    const char *str = "Cisnotfun!\n";
     size_t size = sizeof(char);
     size_t count = strlen(str);
     
