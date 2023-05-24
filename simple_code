@@ -7,6 +7,6 @@
  */
 int main(void)
 {
-	printf("Simple Shell Project!\n");
+	weite("Simple Shell Project!\n");
 	return (0);
 }
