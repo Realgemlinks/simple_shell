@@ -1,46 +1,12 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-
-#define BUFFER_SIZE 1024
 
 /**
- * main - Entry point of the shell program
+ * main - Entry point of the program
  *
- * Return: Always 0
+ * Return: Always 0 (Success)
  */
 int main(void)
 {
-	char *input;
-	size_t bufsize = BUFFER_SIZE;
-
-	input = (char *)malloc(bufsize * sizeof(char));
-	if (!input)
-	{
-		perror("malloc error");
-		exit(EXIT_FAILURE);
-	}
-
-	while (1)
-	{
-		write("$ ");
-		if (getline(&input, &bufsize, stdin) == -1)
-		{
-			perror("getline error");
-			exit(EXIT_FAILURE);
-		}
-
-		/* Remove newline character from input */
-		input[strcspn(input, "\n")] = '\0';
-
-		if (strcmp(input, "exit") == 0)
-			break;
-
-		/* Add your shell logic here */
-
-	}
-
-	free(input);
-	return 0;
+	write("Simple Shell Project!\n");
+	return (0);
 }
