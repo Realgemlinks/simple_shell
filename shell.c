@@ -5,29 +5,29 @@
 /**
  * prompt - Implements the prompt functionality
  * @av: Array of command line arguments
- * @env: Array of environment variables
  */
-void prompt(char **av, char **env)
+void prompt(char **av)
 {
-	/* Implementation of the prompt function */
+    (void)av; /* Indicate that the parameter is intentionally unused */
+
+    /* Rest of the function code */
 }
 
 /**
  * main - Entry point of the program
- * @ac: Number of command line arguments
- * @av: Array of command line arguments
- * @env: Array of environment variables
+ * @argc: Number of command line arguments
+ * @argv: Array of command line arguments
  *
  * Return: Always 0 (Success)
  */
-int main(int ac, char **av, char **env)
+int main(int argc, char *argv[])
 {
-	/* Check if the program is run without any command line arguments */
-	if (ac == 1)
-	{
-		/* Call the prompt function */
-		prompt(av, env);
-	}
+    /* Check if the program is run without any command line arguments */
+    if (argc == 1)
+    {
+        /* Call the prompt function */
+        prompt(argv);
+    }
 
-	return (0);
+    return (0);
 }

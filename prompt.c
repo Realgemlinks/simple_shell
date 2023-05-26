@@ -6,6 +6,8 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+extern char **environ;
+
 #define MAX_COMMAND_LENGTH 100
 
 /**
@@ -25,6 +27,7 @@ void execute_command(char *command)
 {
 	pid_t son_pid = fork();
 
+
 	if (son_pid == -1)
 	{
 		perror("fork");
@@ -37,7 +40,7 @@ void execute_command(char *command)
 		args[0] = command;
 		args[1] = NULL;
 		execvp(command, args);
-		perror("execvp");
+		perror("execve");
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -67,7 +70,7 @@ void print_environment(void)
  *
  * Return: Always 0 (Success)
  */
-int main(void)
+
 {
 	char command[MAX_COMMAND_LENGTH];
 
